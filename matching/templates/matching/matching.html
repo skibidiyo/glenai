@@ -1,0 +1,161 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Skill Matching | Glen{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'matching/matching.css' %}">
+
+<aside class="chat-panel" aria-label="Glen assistant chat">
+  <div class="chat-heading">
+    <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
+    <button class="more-button" type="button" aria-label="More chat options" data-demo-nav="Chat options">&middot;&middot;&middot;</button>
+  </div>
+  <div class="chat-tabs" role="tablist" aria-label="Glen panel"><button class="chat-tab active" type="button" role="tab" aria-selected="true" aria-controls="chat-view" id="chat-tab">Chat</button><button class="chat-tab" type="button" role="tab" aria-selected="false" aria-controls="about-view" id="about-tab">About</button></div>
+  <div class="chat-view" id="chat-view" role="tabpanel" aria-labelledby="chat-tab">
+    <div class="message-scroll" id="message-scroll" aria-live="polite" aria-relevant="additions">
+      <div class="conversation-date">Today</div>
+      <div class="message-row glen-row"><img class="message-avatar" src="{% static 'main/images/nolegmascot.png' %}" alt=""><div class="message-content"><div class="message-meta"><strong>Glen</strong><span>Just now</span></div><div class="message-bubble glen-bubble"><p>Hi there, I&rsquo;m Glen.</p><p>Looking for a buddy to learn from, or someone to teach? I can help you get started with Skill Matching.</p></div></div></div>
+      <div class="suggestions" id="suggestions"><span class="suggestions-label">Try asking</span><div class="suggestion-list"><button type="button" data-prompt="How does skill matching work?">How does skill matching work?</button><button type="button" data-prompt="Find me a mentor">Find me a mentor</button><button type="button" data-prompt="Who can teach me Python?">Who can teach me Python?</button></div></div>
+    </div>
+    <form class="composer" id="chat-form"><label class="sr-only" for="chat-input">Message Glen</label><textarea id="chat-input" rows="2" maxlength="1000" placeholder="Ask Glen a question..."></textarea><div class="composer-footer"><span>Demo responses &middot; No messages are sent</span><button class="send-button" type="submit" aria-label="Send message"><span aria-hidden="true">&#10148;</span></button></div></form>
+  </div>
+  <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
+</aside>
+
+<main class="workspace" id="main-content">
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Skill Matching <span aria-hidden="true">&#8250;</span></span></div>
+  <div class="workspace-inner matching-inner">
+
+    <section class="matching-intro" aria-labelledby="matching-title">
+      <div class="eyebrow"><span class="eyebrow-mark"></span> SKILL MATCHING</div>
+      <h1 id="matching-title">Learn from others. Share what you know.</h1>
+      <p class="matching-lead">Connect with colleagues across roles, countries, and experience levels &mdash; to teach, to learn, or both.</p>
+
+      <ol class="journey" aria-label="How skill matching works">
+        <li class="journey-step">
+          <span class="journey-number">1</span>
+          <div><h3>Curate your profile</h3><p>Add the skills you can teach and the skills you want to learn.</p></div>
+        </li>
+        <li class="journey-step">
+          <span class="journey-number">2</span>
+          <div><h3>Match with a buddy</h3><p>Browse colleagues whose skills complement yours.</p></div>
+        </li>
+        <li class="journey-step">
+          <span class="journey-number">3</span>
+          <div><h3>Meet online or offline</h3><p>Connect through Teams or arrange to meet in person.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="matching-profile" aria-labelledby="profile-title">
+      <div class="section-heading">
+        <div><span class="section-kicker">YOUR PROFILE</span><h2 id="profile-title">{{ profile.name }}</h2></div>
+        <button class="ghost-button" type="button">Edit profile</button>
+      </div>
+      <div class="profile-card">
+        <div class="profile-identity">
+          <span class="profile-avatar" aria-hidden="true">{{ profile.name|slice:":1" }}</span>
+          <div>
+            <p class="profile-name">{{ profile.name }}</p>
+            <p class="profile-meta">{{ profile.role }} &middot; {{ profile.country }} &middot; {{ profile.experience_years }} years experience</p>
+          </div>
+        </div>
+        <div class="profile-skills">
+          <div class="skill-group">
+            <span class="skill-group-label">Can teach</span>
+            <div class="skill-chip-list">{% for skill in profile.can_teach %}<span class="skill-chip teach">{{ skill }}</span>{% endfor %}</div>
+          </div>
+          <div class="skill-group">
+            <span class="skill-group-label">Wants to learn</span>
+            <div class="skill-chip-list">{% for skill in profile.wants_to_learn %}<span class="skill-chip learn">{{ skill }}</span>{% endfor %}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="matching-results" aria-labelledby="results-title">
+      <div class="section-heading">
+        <div><span class="section-kicker">SUGGESTED BUDDIES</span><h2 id="results-title">People you could learn from &mdash; and teach</h2></div>
+        <span class="section-count" id="deck-counter">{{ employees|length }} matches</span>
+      </div>
+
+      <form class="matching-filters" id="matching-filters" aria-label="Filter matches">
+        <div class="filter-field">
+          <label for="filter-skill">Skill</label>
+          <select id="filter-skill">
+            <option value="">Any skill</option>
+            {% for skill in skills %}<option value="{{ skill }}">{{ skill }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="filter-country">Country</label>
+          <select id="filter-country">
+            <option value="">Any country</option>
+            {% for country in countries %}<option value="{{ country }}">{{ country }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="filter-experience">Experience level</label>
+          <select id="filter-experience">
+            <option value="">Any level</option>
+            {% for band in experience_bands %}<option value="{{ band }}">{{ band }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="filter-mode">Meeting mode</label>
+          <select id="filter-mode">
+            <option value="">Online or in-person</option>
+            <option value="Online">Online</option>
+            <option value="In-person">In-person</option>
+          </select>
+        </div>
+        <button type="button" class="ghost-button" id="filter-reset">Clear filters</button>
+      </form>
+
+      <p class="no-results" id="no-results" hidden>No matches for these filters yet. Try clearing a filter.</p>
+
+      <div class="deck-area">
+        <div class="deck-progress" id="deck-progress-wrap">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="deck-progress-fill"></div></div>
+          <span class="deck-progress-label" id="deck-progress-label"></span>
+        </div>
+
+        <div class="deck-stack" id="deck-stack" role="group" aria-label="Buddy suggestions &mdash; use Pass or Connect, or the arrow keys" tabindex="0"></div>
+
+        <div class="deck-controls" id="deck-controls">
+          <button class="deck-btn deck-btn-pass" type="button" id="deck-pass" aria-label="Pass on this suggestion"><span aria-hidden="true">&#10005;</span></button>
+          <button class="ghost-button deck-undo" type="button" id="deck-undo" disabled>Undo</button>
+          <button class="deck-btn deck-btn-connect" type="button" id="deck-connect" aria-label="Connect with this person"><span aria-hidden="true">&#10003;</span></button>
+        </div>
+
+        <div class="deck-empty" id="deck-empty" hidden>
+          <p>You&rsquo;ve gone through everyone that matches these filters.</p>
+          <button class="ghost-button" type="button" id="deck-restart">Start over</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="modal-overlay" id="connect-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connect-modal-title">
+    <button class="modal-close" type="button" id="connect-modal-close" aria-label="Close">&times;</button>
+    <h2 id="connect-modal-title">Connect with <span id="connect-name"></span>?</h2>
+    <p class="modal-note">This is a prototype interaction. No message is actually sent.</p>
+    <div class="modal-actions" id="connect-modal-choices">
+      <button class="primary-button" type="button" id="connect-message">Message in Teams</button>
+      <button class="ghost-button" type="button" id="connect-schedule">Schedule a meeting</button>
+      <button class="text-button" type="button" id="connect-cancel">Cancel</button>
+    </div>
+    <div class="modal-confirmed" id="connect-modal-confirmed" hidden>
+      <p class="modal-confirmation" id="connect-confirmation" role="status"></p>
+      <button class="primary-button" type="button" id="connect-continue">Continue</button>
+    </div>
+  </div>
+</div>
+
+{{ employees|json_script:"match-employees-data" }}
+<script src="{% static 'matching/matching.js' %}" defer></script>
+{% endblock %}

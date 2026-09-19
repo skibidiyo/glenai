@@ -1,0 +1,101 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Your Mineral | Glen{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'personality/personality.css' %}">
+
+<aside class="chat-panel" aria-label="Glen assistant chat">
+  <div class="chat-heading">
+    <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
+    <button class="more-button" type="button" aria-label="More chat options" data-demo-nav="Chat options">&middot;&middot;&middot;</button>
+  </div>
+  <div class="chat-tabs" role="tablist" aria-label="Glen panel"><button class="chat-tab active" type="button" role="tab" aria-selected="true" aria-controls="chat-view" id="chat-tab">Chat</button><button class="chat-tab" type="button" role="tab" aria-selected="false" aria-controls="about-view" id="about-tab">About</button></div>
+  <div class="chat-view" id="chat-view" role="tabpanel" aria-labelledby="chat-tab">
+    <div class="message-scroll" id="message-scroll" aria-live="polite" aria-relevant="additions">
+      <div class="conversation-date">Today</div>
+      <div class="message-row glen-row"><img class="message-avatar" src="{% static 'main/images/nolegmascot.png' %}" alt=""><div class="message-content"><div class="message-meta"><strong>Glen</strong><span>Just now</span></div><div class="message-bubble glen-bubble"><p>Nice one &mdash; you&rsquo;ve got your result.</p><p>Want to see how your mineral works alongside others on your team?</p></div></div></div>
+      <div class="suggestions" id="suggestions"><span class="suggestions-label">Try asking</span><div class="suggestion-list"><button type="button" data-prompt="Who do I work well with?">Who do I work well with?</button><button type="button" data-prompt="Find me a mentor">Find me a mentor</button></div></div>
+    </div>
+    <form class="composer" id="chat-form"><label class="sr-only" for="chat-input">Message Glen</label><textarea id="chat-input" rows="2" maxlength="1000" placeholder="Ask Glen a question..."></textarea><div class="composer-footer"><span>Demo responses &middot; No messages are sent</span><button class="send-button" type="submit" aria-label="Send message"><span aria-hidden="true">&#10148;</span></button></div></form>
+  </div>
+  <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
+</aside>
+
+<main class="workspace" id="main-content">
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Personality <span aria-hidden="true">&#8250;</span></span></div>
+  <div class="workspace-inner personality-inner">
+
+    {% if not has_result %}
+    <p class="result-notice">No quiz answers were found, so we&rsquo;re showing an example result below. <a href="{% url 'personality:quiz' %}">Take the quiz</a> to get your own.</p>
+    {% endif %}
+
+    <section class="result-hero mineral-{{ mineral.key }}" aria-labelledby="result-title">
+      <span class="result-kicker">YOUR MINERAL</span>
+      <h1 id="result-title">{{ mineral.name }}</h1>
+      <p class="result-tagline">{{ mineral.tagline }}</p>
+      <div class="result-traits">{% for trait in mineral.traits %}<span class="trait-chip">{{ trait }}</span>{% endfor %}</div>
+    </section>
+
+    <section class="result-details">
+      <div class="result-detail-card">
+        <h2>Key strengths</h2>
+        <ul>{% for s in mineral.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+      </div>
+      <div class="result-detail-card">
+        <h2>Work style</h2>
+        <p>{{ mineral.work_style }}</p>
+      </div>
+      <div class="result-detail-card">
+        <h2>Collaboration style</h2>
+        <p>{{ mineral.collaboration_style }}</p>
+      </div>
+      <div class="result-detail-card">
+        <h2>Growth opportunities</h2>
+        <ul>{% for g in mineral.growth_opportunities %}<li>{{ g }}</li>{% endfor %}</ul>
+      </div>
+      <div class="result-detail-card">
+        <h2>Roles you may enjoy</h2>
+        <ul>{% for r in mineral.roles %}<li>{{ r }}</li>{% endfor %}</ul>
+      </div>
+      <div class="result-detail-card">
+        <h2>People you may work well with</h2>
+        <div class="complement-list">
+          {% for c in complements %}
+          <div class="complement-item"><span class="mineral-dot mineral-dot-{{ c.key }}"></span><div><strong>{{ c.name }}</strong><span>{{ c.tagline }}</span></div></div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="networking-cta">
+      <div>
+        <h2>Want to meet people who complement your style?</h2>
+        <p>This is a prototype interaction. In a future version, this could connect to Skill Matching.</p>
+      </div>
+      <button class="primary-button" type="button" id="find-complement-btn">Find people who complement my style</button>
+    </section>
+    <p class="networking-confirmation" id="networking-confirmation" role="status" hidden>Coming soon &mdash; this will connect to Skill Matching to suggest complementary colleagues.</p>
+
+    <section class="other-minerals" aria-labelledby="other-minerals-title">
+      <h2 id="other-minerals-title">The other minerals</h2>
+      <div class="mineral-grid">
+        {% for m in other_minerals %}
+        <div class="mineral-summary-card mineral-{{ m.key }}">
+          <h3>{{ m.name }} <span>{{ m.tagline }}</span></h3>
+          <p>{{ m.work_style }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="result-footer-actions">
+      <a class="ghost-button" href="{% url 'personality:quiz' %}">Retake the quiz</a>
+    </div>
+
+  </div>
+</main>
+
+<script src="{% static 'personality/personality.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Mineral Personality | Glen{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'personality/personality.css' %}">
+
+<aside class="chat-panel" aria-label="Glen assistant chat">
+  <div class="chat-heading">
+    <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
+    <button class="more-button" type="button" aria-label="More chat options" data-demo-nav="Chat options">&middot;&middot;&middot;</button>
+  </div>
+  <div class="chat-tabs" role="tablist" aria-label="Glen panel"><button class="chat-tab active" type="button" role="tab" aria-selected="true" aria-controls="chat-view" id="chat-tab">Chat</button><button class="chat-tab" type="button" role="tab" aria-selected="false" aria-controls="about-view" id="about-tab">About</button></div>
+  <div class="chat-view" id="chat-view" role="tabpanel" aria-labelledby="chat-tab">
+    <div class="message-scroll" id="message-scroll" aria-live="polite" aria-relevant="additions">
+      <div class="conversation-date">Today</div>
+      <div class="message-row glen-row"><img class="message-avatar" src="{% static 'main/images/nolegmascot.png' %}" alt=""><div class="message-content"><div class="message-meta"><strong>Glen</strong><span>Just now</span></div><div class="message-bubble glen-bubble"><p>Hi there, I&rsquo;m Glen.</p><p>Curious what your mineral type is? Try the Mineral Personality activity to explore your working style.</p></div></div></div>
+      <div class="suggestions" id="suggestions"><span class="suggestions-label">Try asking</span><div class="suggestion-list"><button type="button" data-prompt="What's my mineral type?">What&rsquo;s my mineral type?</button><button type="button" data-prompt="What is Cobalt like?">What is Cobalt like?</button></div></div>
+    </div>
+    <form class="composer" id="chat-form"><label class="sr-only" for="chat-input">Message Glen</label><textarea id="chat-input" rows="2" maxlength="1000" placeholder="Ask Glen a question..."></textarea><div class="composer-footer"><span>Demo responses &middot; No messages are sent</span><button class="send-button" type="submit" aria-label="Send message"><span aria-hidden="true">&#10148;</span></button></div></form>
+  </div>
+  <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
+</aside>
+
+<main class="workspace" id="main-content">
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Personality <span aria-hidden="true">&#8250;</span></span></div>
+  <div class="workspace-inner personality-inner">
+
+    <section class="personality-intro" aria-labelledby="quiz-title">
+      <div class="eyebrow"><span class="eyebrow-mark"></span> MINERAL PERSONALITY</div>
+      <h1 id="quiz-title">Discover your working style</h1>
+      <p class="personality-lead">Answer {{ question_count }} short questions to explore how you approach work, collaboration, and change. This is a lightweight discovery activity, not a scientific assessment &mdash; use it to spark conversation, not to make employment decisions.</p>
+    </section>
+
+    <section class="quiz-card" aria-labelledby="quiz-title" id="quiz-card">
+      <div class="quiz-progress">
+        <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+        <span class="quiz-progress-label" id="quiz-progress-label">Question 1 of {{ question_count }}</span>
+      </div>
+
+      <form id="quiz-form">
+        <div id="quiz-questions"></div>
+      </form>
+
+      <div class="quiz-nav">
+        <button class="ghost-button" type="button" id="quiz-back" disabled>Back</button>
+        <button class="primary-button" type="button" id="quiz-next">Next</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+{{ questions|json_script:"quiz-questions-data" }}
+<script>window.PERSONALITY_RESULT_URL = "{% url 'personality:result' %}";</script>
+<script src="{% static 'personality/personality.js' %}" defer></script>
+{% endblock %}
