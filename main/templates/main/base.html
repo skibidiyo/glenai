@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Glen | Glencore{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'main/css/global.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/teams-shell.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/glen-chat.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+  <script src="{% static 'main/js/glen-chat.js' %}" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-brand" aria-label="Glencore workplace">Glencore <span class="brand-divider"></span> Teams</div>
+      <div class="topbar-center">
+        <button class="topbar-icon" type="button" aria-label="Go back" data-history="back">‹</button>
+        <button class="topbar-icon" type="button" aria-label="Go forward" data-history="forward">›</button>
+        <div class="search-wrap"><span aria-hidden="true">⌕</span><input type="search" aria-label="Search this prototype" placeholder="Search" autocomplete="off"><kbd>⌘ K</kbd></div>
+      </div>
+      <div class="topbar-account"><span class="status-dot"></span><span class="account-label">Available</span><span class="account-avatar" aria-label="Demo user">JD</span></div>
+    </header>
+
+    <div class="app-body">
+      <nav class="app-rail" aria-label="Primary navigation">
+        <div class="rail-group">
+          <button class="rail-item" type="button" data-demo-nav="Activity"><span class="rail-glyph" aria-hidden="true">♧</span><span>Activity</span></button>
+          <button class="rail-item" type="button" data-demo-nav="Chat"><span class="rail-glyph" aria-hidden="true">▤</span><span>Chat</span></button>
+          <button class="rail-item" type="button" data-demo-nav="Teams"><span class="rail-glyph" aria-hidden="true">▦</span><span>Teams</span></button>
+          <button class="rail-item" type="button" data-demo-nav="Calendar"><span class="rail-glyph" aria-hidden="true">▣</span><span>Calendar</span></button>
+          <button class="rail-item" type="button" data-demo-nav="Calls"><span class="rail-glyph" aria-hidden="true">♧</span><span>Calls</span></button>
+          <button class="rail-item" type="button" data-demo-nav="OneDrive"><span class="rail-glyph" aria-hidden="true">☁</span><span>OneDrive</span></button>
+          <button class="rail-item" type="button" data-demo-nav="Copilot"><span class="rail-glyph" aria-hidden="true">✧</span><span>Copilot</span></button>
+          <a class="rail-item rail-item-active" href="{% url 'main:home' %}" aria-current="page"><img class="rail-mascot" src="{% static 'main/images/nolegmascot.png' %}" alt=""><span>Glen</span></a>
+        </div>
+        <button class="rail-item rail-bottom" type="button" data-demo-nav="Apps"><span class="rail-glyph" aria-hidden="true">⊞</span><span>Apps</span></button>
+      </nav>
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<aside class="chat-panel" aria-label="Glen assistant chat">
+  <div class="chat-heading">
+    <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
+    <button class="more-button" type="button" aria-label="More chat options" data-demo-nav="Chat options">···</button>
+  </div>
+  <div class="chat-tabs" role="tablist" aria-label="Glen panel"><button class="chat-tab active" type="button" role="tab" aria-selected="true" aria-controls="chat-view" id="chat-tab">Chat</button><button class="chat-tab" type="button" role="tab" aria-selected="false" aria-controls="about-view" id="about-tab">About</button></div>
+  <div class="chat-view" id="chat-view" role="tabpanel" aria-labelledby="chat-tab">
+    <div class="message-scroll" id="message-scroll" aria-live="polite" aria-relevant="additions">
+      <div class="conversation-date">Today</div>
+      <div class="message-row glen-row"><img class="message-avatar" src="{% static 'main/images/nolegmascot.png' %}" alt=""><div class="message-content"><div class="message-meta"><strong>Glen</strong><span>Just now</span></div><div class="message-bubble glen-bubble"><p>Hi there, I’m Glen.</p><p>I can help with workplace questions, company policies, support, learning opportunities, and connecting you with people across our global network.</p><p>What can I help you with today?</p></div></div></div>
+      <div class="suggestions" id="suggestions"><span class="suggestions-label">Try asking</span><div class="suggestion-list"><button type="button" data-prompt="Annual leave policy">Annual leave policy</button><button type="button" data-prompt="Workplace support">Workplace support</button><button type="button" data-prompt="How do I submit an expense?">How do I submit an expense?</button><button type="button" data-prompt="Find me a mentor">Find me a mentor</button><button type="button" data-prompt="What’s my mineral type?">What’s my mineral type?</button></div></div>
+    </div>
+    <form class="composer" id="chat-form"><label class="sr-only" for="chat-input">Message Glen</label><textarea id="chat-input" rows="2" maxlength="1000" placeholder="Ask Glen a question..."></textarea><div class="composer-footer"><span>Demo responses · No messages are sent</span><button class="send-button" type="submit" aria-label="Send message"><span aria-hidden="true">➤</span></button></div></form>
+  </div>
+  <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
+</aside>
+
+<main class="workspace" id="main-content">
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Home <span aria-hidden="true">⌄</span></span></div>
+  <div class="workspace-inner">
+    <section class="welcome" aria-labelledby="welcome-title"><div class="welcome-copy"><div class="eyebrow"><span class="eyebrow-mark"></span> YOUR WORKPLACE COMPANION</div><h2 id="welcome-title">Good to see you.</h2><p class="welcome-lead">AI assistant for knowledge, connection, and growth.</p><p class="welcome-sub">Get answers. Build your skills. Find your people.</p><button class="welcome-chat-link" type="button" id="focus-chat">Ask Glen a question <span aria-hidden="true">↗</span></button></div><img class="welcome-mascot" src="{% static 'main/images/withlegmascot.png' %}" alt="Glen mascot waving"></section>
+    <section class="experiences" aria-labelledby="experiences-title"><div class="section-heading"><div><span class="section-kicker">EXPLORE WITH GLEN</span><h2 id="experiences-title">Your next step starts here</h2></div><span class="section-count">02 experiences</span></div>
+      <div class="experience-grid">
+        <article class="experience-card"><div class="card-top"><span class="card-symbol matching-symbol" aria-hidden="true">◎</span><span class="card-number">01 / 02</span></div><h3>Skill Matching</h3><p class="card-intro">Learn from others. Share your expertise. Grow together.</p><div class="card-rule"></div><p class="card-detail">Build a profile of skills to teach and learn, then connect with a buddy across our global network.</p><div class="card-tags"><span>Mentorship</span><span>Connections</span></div><a class="card-link" href="/matching/">Find opportunities <span aria-hidden="true">↗</span></a></article>
+        <article class="experience-card"><div class="card-top"><span class="card-symbol mineral-symbol" aria-hidden="true">◇</span><span class="card-number">02 / 02</span></div><h3>Mineral Personality</h3><p class="card-intro">Understand your work style. Uncover your strengths.</p><div class="card-rule"></div><p class="card-detail">Explore how you work through the qualities of Copper, Cobalt, Nickel, and Zinc.</p><div class="mineral-swatches" aria-label="Copper, Cobalt, Nickel, and Zinc"><span class="copper"></span><span class="cobalt"></span><span class="nickel"></span><span class="zinc"></span></div><a class="card-link" href="/personality/">Explore your type <span aria-hidden="true">↗</span></a></article>
+      </div>
+    </section>
+    <div class="workspace-footer"><span>GLEN <span class="footer-dot">·</span> GLENCORE</span><span>Prototype experience</span></div>
+  </div>
+</main>
+{% endblock %}
