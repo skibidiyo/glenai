@@ -26,135 +26,25 @@
 <main class="workspace" id="main-content">
   <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Skill Matching <span aria-hidden="true">&#8250;</span></span></div>
   <div class="workspace-inner matching-inner">
-
-    <section class="matching-intro" aria-labelledby="matching-title">
-      <div class="eyebrow"><span class="eyebrow-mark"></span> SKILL MATCHING</div>
-      <h1 id="matching-title">Learn from others. Share what you know.</h1>
-      <p class="matching-lead">Connect with colleagues across roles, countries, and experience levels &mdash; to teach, to learn, or both.</p>
-
-      <ol class="journey" aria-label="How skill matching works">
-        <li class="journey-step">
-          <span class="journey-number">1</span>
-          <div><h3>Curate your profile</h3><p>Add the skills you can teach and the skills you want to learn.</p></div>
-        </li>
-        <li class="journey-step">
-          <span class="journey-number">2</span>
-          <div><h3>Match with a buddy</h3><p>Browse colleagues whose skills complement yours.</p></div>
-        </li>
-        <li class="journey-step">
-          <span class="journey-number">3</span>
-          <div><h3>Meet online or offline</h3><p>Connect through Teams or arrange to meet in person.</p></div>
-        </li>
-      </ol>
+    <header class="matching-intro"><span class="eyebrow">SKILL MATCHING</span><h1>Learn from someone new.</h1><p>Discover colleagues who can share what they know—and learn something from you.</p></header>
+    <p class="journey-line"><span>01 Curate your profile</span><span>02 Match with a buddy</span><span>03 Meet online or offline</span></p>
+    <section class="discovery" aria-labelledby="discovery-title">
+      <div class="discovery-header"><div><span class="section-kicker">SUGGESTED BUDDY</span><h2 id="discovery-title">A good conversation starts here</h2></div><div class="discovery-tools"><button class="ghost-button" type="button" id="profile-open">My Learning Profile</button><button class="ghost-button" type="button" id="saved-open">Saved profiles <span id="saved-badge"></span></button><button class="ghost-button" type="button" id="filters-open">Filters</button></div></div>
+      <div class="browse-meta"><span id="deck-counter" aria-live="polite"></span><div class="browse-nav"><button type="button" id="deck-previous" aria-label="Previous profile">&#8592; Previous</button><button type="button" id="deck-next" aria-label="Next profile">Next &#8594;</button></div></div>
+      <p class="no-results" id="no-results" hidden>No colleagues match these filters. Try clearing a filter.</p>
+      <article class="buddy-card" id="buddy-card" aria-live="polite"></article>
+      <div class="deck-controls" id="deck-controls"><button class="action-button" type="button" id="deck-pass"><span aria-hidden="true">&#10005;</span> Pass</button><button class="action-button" type="button" id="deck-save"><span aria-hidden="true">&#9645;</span> Save</button><button class="action-button action-primary" type="button" id="deck-connect"><span aria-hidden="true">&#10003;</span> Connect</button></div>
+      <div class="deck-empty" id="deck-empty" hidden><p>You’ve seen everyone who matches these filters.</p><button class="ghost-button" type="button" id="deck-restart">Start over</button></div>
+      <p class="saved-count" id="saved-count" aria-live="polite"></p>
     </section>
-
-    <section class="matching-profile" aria-labelledby="profile-title">
-      <div class="section-heading">
-        <div><span class="section-kicker">YOUR PROFILE</span><h2 id="profile-title">{{ profile.name }}</h2></div>
-        <button class="ghost-button" type="button">Edit profile</button>
-      </div>
-      <div class="profile-card">
-        <div class="profile-identity">
-          <span class="profile-avatar" aria-hidden="true">{{ profile.name|slice:":1" }}</span>
-          <div>
-            <p class="profile-name">{{ profile.name }}</p>
-            <p class="profile-meta">{{ profile.role }} &middot; {{ profile.country }} &middot; {{ profile.experience_years }} years experience</p>
-          </div>
-        </div>
-        <div class="profile-skills">
-          <div class="skill-group">
-            <span class="skill-group-label">Can teach</span>
-            <div class="skill-chip-list">{% for skill in profile.can_teach %}<span class="skill-chip teach">{{ skill }}</span>{% endfor %}</div>
-          </div>
-          <div class="skill-group">
-            <span class="skill-group-label">Wants to learn</span>
-            <div class="skill-chip-list">{% for skill in profile.wants_to_learn %}<span class="skill-chip learn">{{ skill }}</span>{% endfor %}</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="matching-results" aria-labelledby="results-title">
-      <div class="section-heading">
-        <div><span class="section-kicker">SUGGESTED BUDDIES</span><h2 id="results-title">People you could learn from &mdash; and teach</h2></div>
-        <span class="section-count" id="deck-counter">{{ employees|length }} matches</span>
-      </div>
-
-      <form class="matching-filters" id="matching-filters" aria-label="Filter matches">
-        <div class="filter-field">
-          <label for="filter-skill">Skill</label>
-          <select id="filter-skill">
-            <option value="">Any skill</option>
-            {% for skill in skills %}<option value="{{ skill }}">{{ skill }}</option>{% endfor %}
-          </select>
-        </div>
-        <div class="filter-field">
-          <label for="filter-country">Country</label>
-          <select id="filter-country">
-            <option value="">Any country</option>
-            {% for country in countries %}<option value="{{ country }}">{{ country }}</option>{% endfor %}
-          </select>
-        </div>
-        <div class="filter-field">
-          <label for="filter-experience">Experience level</label>
-          <select id="filter-experience">
-            <option value="">Any level</option>
-            {% for band in experience_bands %}<option value="{{ band }}">{{ band }}</option>{% endfor %}
-          </select>
-        </div>
-        <div class="filter-field">
-          <label for="filter-mode">Meeting mode</label>
-          <select id="filter-mode">
-            <option value="">Online or in-person</option>
-            <option value="Online">Online</option>
-            <option value="In-person">In-person</option>
-          </select>
-        </div>
-        <button type="button" class="ghost-button" id="filter-reset">Clear filters</button>
-      </form>
-
-      <p class="no-results" id="no-results" hidden>No matches for these filters yet. Try clearing a filter.</p>
-
-      <div class="deck-area">
-        <div class="deck-progress" id="deck-progress-wrap">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="deck-progress-fill"></div></div>
-          <span class="deck-progress-label" id="deck-progress-label"></span>
-        </div>
-
-        <div class="deck-stack" id="deck-stack" role="group" aria-label="Buddy suggestions &mdash; use Pass or Connect, or the arrow keys" tabindex="0"></div>
-
-        <div class="deck-controls" id="deck-controls">
-          <button class="deck-btn deck-btn-pass" type="button" id="deck-pass" aria-label="Pass on this suggestion"><span aria-hidden="true">&#10005;</span></button>
-          <button class="ghost-button deck-undo" type="button" id="deck-undo" disabled>Undo</button>
-          <button class="deck-btn deck-btn-connect" type="button" id="deck-connect" aria-label="Connect with this person"><span aria-hidden="true">&#10003;</span></button>
-        </div>
-
-        <div class="deck-empty" id="deck-empty" hidden>
-          <p>You&rsquo;ve gone through everyone that matches these filters.</p>
-          <button class="ghost-button" type="button" id="deck-restart">Start over</button>
-        </div>
-      </div>
-    </section>
-
   </div>
 </main>
-
-<div class="modal-overlay" id="connect-modal" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connect-modal-title">
-    <button class="modal-close" type="button" id="connect-modal-close" aria-label="Close">&times;</button>
-    <h2 id="connect-modal-title">Connect with <span id="connect-name"></span>?</h2>
-    <p class="modal-note">This is a prototype interaction. No message is actually sent.</p>
-    <div class="modal-actions" id="connect-modal-choices">
-      <button class="primary-button" type="button" id="connect-message">Message in Teams</button>
-      <button class="ghost-button" type="button" id="connect-schedule">Schedule a meeting</button>
-      <button class="text-button" type="button" id="connect-cancel">Cancel</button>
-    </div>
-    <div class="modal-confirmed" id="connect-modal-confirmed" hidden>
-      <p class="modal-confirmation" id="connect-confirmation" role="status"></p>
-      <button class="primary-button" type="button" id="connect-continue">Continue</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="profile-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title"><button class="modal-close" type="button" data-close="profile-modal" aria-label="Close">&times;</button><span class="section-kicker">MY LEARNING PROFILE</span><div class="learning-profile-identity"><span class="learning-avatar" id="learning-avatar" aria-hidden="true"></span><div><h2 id="profile-modal-title">{{ profile.name }}</h2><p id="learning-profile-meta">{{ profile.role }} · {{ profile.country }} · {{ profile.experience_years }} years experience</p></div></div><h3>SKILLS I CAN TEACH</h3><div class="skill-chip-list" id="learning-teach-skills">{% for skill in profile.can_teach %}<span class="skill-chip teach">{{ skill }}</span>{% endfor %}</div><h3>SKILLS I WANT TO LEARN</h3><div class="skill-chip-list" id="learning-learn-skills">{% for skill in profile.wants_to_learn %}<span class="skill-chip learn">{{ skill }}</span>{% endfor %}</div><button class="ghost-button profile-edit-button" type="button" id="profile-edit">Edit profile</button></div></div>
+<div class="modal-overlay" id="profile-edit-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-edit-title"><button class="modal-close" type="button" data-close="profile-edit-modal" aria-label="Close">&times;</button><h2 id="profile-edit-title">Edit learning profile</h2><form id="learning-edit-form" class="learning-edit-form"><label>Role<input id="learning-role" required maxlength="80" value="{{ profile.role }}"></label><label>Country<input id="learning-country" required maxlength="80" value="{{ profile.country }}"></label><label>Years of experience<input id="learning-years" required type="number" min="0" max="70" value="{{ profile.experience_years }}"></label><label>Skills I can teach <span>(comma separated)</span><textarea id="learning-teach" required rows="2">{{ profile.can_teach|join:", " }}</textarea></label><label>Skills I want to learn <span>(comma separated)</span><textarea id="learning-learn" required rows="2">{{ profile.wants_to_learn|join:", " }}</textarea></label><div class="modal-actions"><button class="primary-button" type="submit">Save profile</button><button class="ghost-button" type="button" data-close="profile-edit-modal">Cancel</button></div></form></div></div>
+<div class="modal-overlay" id="filters-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="filters-modal-title"><button class="modal-close" type="button" data-close="filters-modal" aria-label="Close">&times;</button><h2 id="filters-modal-title">Filters</h2><form id="matching-filters" class="matching-filters"><label>Skill<select id="filter-skill"><option value="">Any skill</option>{% for skill in skills %}<option value="{{ skill }}">{{ skill }}</option>{% endfor %}</select></label><label>Country<select id="filter-country"><option value="">Any country</option>{% for country in countries %}<option value="{{ country }}">{{ country }}</option>{% endfor %}</select></label><label>Experience level<select id="filter-experience"><option value="">Any level</option>{% for band in experience_bands %}<option value="{{ band }}">{{ band }}</option>{% endfor %}</select></label><label>Meeting mode<select id="filter-mode"><option value="">Online or in-person</option><option value="Online">Online</option><option value="In-person">In-person</option></select></label><div class="modal-actions"><button class="ghost-button" type="button" id="filter-reset">Clear filters</button><button class="primary-button" type="button" id="filter-apply">Show colleagues</button></div></form></div></div>
+<div class="modal-overlay" id="saved-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="saved-modal-title"><button class="modal-close" type="button" data-close="saved-modal" aria-label="Close">&times;</button><h2 id="saved-modal-title">Saved profiles</h2><div id="saved-list"></div></div></div>
+<div class="modal-overlay" id="profile-detail-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-detail-title"><button class="modal-close" type="button" data-close="profile-detail-modal" aria-label="Close">&times;</button><h2 id="profile-detail-title"></h2><div id="profile-detail-body"></div></div></div>
+<div class="modal-overlay" id="connect-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="connect-modal-title"><button class="modal-close" type="button" data-close="connect-modal" aria-label="Close">&times;</button><h2 id="connect-modal-title">Connect with <span id="connect-name"></span>?</h2><p>You have complementary learning goals. Choose how you might start a conversation.</p><p class="prototype-note">This is a prototype. No message or invitation will be sent.</p><div class="modal-actions" id="connect-choices"><button class="primary-button" type="button" id="connect-message">Message in Teams</button><button class="ghost-button" type="button" id="connect-schedule">Schedule a meeting</button><button class="ghost-button" type="button" data-close="connect-modal">Cancel</button></div><div id="connect-confirmed" hidden><p id="connect-confirmation" role="status"></p><button class="primary-button" type="button" id="connect-continue">Continue browsing</button></div></div></div>
 
 {{ employees|json_script:"match-employees-data" }}
 <script src="{% static 'matching/matching.js' %}" defer></script>

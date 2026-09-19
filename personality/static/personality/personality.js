@@ -1,119 +1,67 @@
 (function () {
   'use strict';
+  var data = document.getElementById('quiz-questions-data');
+  if (!data) return;
+  var questions = JSON.parse(data.textContent);
+  var container = document.getElementById('quiz-questions');
+  var fill = document.getElementById('quiz-progress-fill');
+  var label = document.getElementById('quiz-progress-label');
+  var back = document.getElementById('quiz-back');
+  var next = document.getElementById('quiz-next');
+  var current = 0;
+  var answers = {};
+  var choices = ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'];
 
-  var questionsDataEl = document.getElementById('quiz-questions-data');
-  if (questionsDataEl) {
-    initQuiz(JSON.parse(questionsDataEl.textContent));
-  }
-
-  function initQuiz(questions) {
-    var questionsContainer = document.getElementById('quiz-questions');
-    var progressFill = document.getElementById('quiz-progress-fill');
-    var progressLabel = document.getElementById('quiz-progress-label');
-    var backButton = document.getElementById('quiz-back');
-    var nextButton = document.getElementById('quiz-next');
-
-    var current = 0;
-    var answers = {};
-
-    questions.forEach(function (question, index) {
-      var wrapper = document.createElement('div');
-      wrapper.className = 'quiz-question' + (index === 0 ? ' active' : '');
-      wrapper.dataset.index = String(index);
-
-      var heading = document.createElement('h2');
-      heading.textContent = question.prompt;
-      wrapper.appendChild(heading);
-
-      var list = document.createElement('ul');
-      list.className = 'quiz-options';
-
-      question.options.forEach(function (option, optionIndex) {
-        var li = document.createElement('li');
-        li.className = 'quiz-option';
-
-        var label = document.createElement('label');
-        var input = document.createElement('input');
-        input.type = 'radio';
-        input.name = question.id;
-        input.value = option.mineral;
-        input.id = question.id + '-' + optionIndex;
-        input.addEventListener('change', function () {
-          answers[question.id] = option.mineral;
-          nextButton.disabled = false;
-        });
-
-        label.setAttribute('for', input.id);
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(option.text));
-        li.appendChild(label);
-        list.appendChild(li);
-      });
-
-      wrapper.appendChild(list);
-      questionsContainer.appendChild(wrapper);
-    });
-
-    function render() {
-      var slides = questionsContainer.querySelectorAll('.quiz-question');
-      slides.forEach(function (slide, index) {
-        slide.classList.toggle('active', index === current);
-      });
-
-      var percent = ((current + 1) / questions.length) * 100;
-      progressFill.style.width = percent + '%';
-      progressLabel.textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
-
-      backButton.disabled = current === 0;
-      var hasAnswer = Boolean(answers[questions[current].id]);
-      nextButton.disabled = !hasAnswer;
-      nextButton.textContent = current === questions.length - 1 ? 'See my result' : 'Next';
-    }
-
-    backButton.addEventListener('click', function () {
-      if (current === 0) return;
-      current -= 1;
-      render();
-    });
-
-    nextButton.addEventListener('click', function () {
-      var question = questions[current];
-      if (!answers[question.id]) return;
-
-      if (current < questions.length - 1) {
-        current += 1;
+  questions.forEach(function (question, index) {
+    var section = document.createElement('section');
+    section.className = 'quiz-question';
+    var heading = document.createElement('h2');
+    heading.textContent = question.prompt;
+    section.appendChild(heading);
+    var group = document.createElement('div');
+    group.className = 'likert-options';
+    group.setAttribute('role', 'radiogroup');
+    group.setAttribute('aria-label', question.prompt);
+    choices.forEach(function (choice, position) {
+      var item = document.createElement('label');
+      item.className = 'likert-choice';
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = question.id;
+      input.value = String(position + 1);
+      input.addEventListener('change', function () {
+        answers[question.id] = input.value;
         render();
-        return;
-      }
-
-      var tally = { copper: 0, cobalt: 0, nickel: 0, zinc: 0 };
-      Object.keys(answers).forEach(function (questionId) {
-        var mineral = answers[questionId];
-        if (mineral in tally) tally[mineral] += 1;
       });
-
-      var order = ['copper', 'cobalt', 'nickel', 'zinc'];
-      var best = order[0];
-      var bestScore = -1;
-      order.forEach(function (mineral) {
-        if (tally[mineral] > bestScore) {
-          bestScore = tally[mineral];
-          best = mineral;
-        }
-      });
-
-      var destination = (window.PERSONALITY_RESULT_URL || '/personality/result/') + '?mineral=' + best;
-      window.location.href = destination;
+      item.appendChild(input);
+      var text = document.createElement('span');
+      text.textContent = choice;
+      item.appendChild(text);
+      group.appendChild(item);
     });
+    section.appendChild(group);
+    container.appendChild(section);
+  });
 
-    render();
+  function render() {
+    container.querySelectorAll('.quiz-question').forEach(function (section, index) {
+      section.classList.toggle('active', index === current);
+      section.hidden = index !== current;
+    });
+    fill.style.width = ((current + 1) / questions.length * 100) + '%';
+    label.textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+    back.disabled = current === 0;
+    next.disabled = !answers[questions[current].id];
+    next.textContent = current === questions.length - 1 ? 'See my work style' : 'Next';
   }
 
-  var findComplementBtn = document.getElementById('find-complement-btn');
-  var networkingConfirmation = document.getElementById('networking-confirmation');
-  if (findComplementBtn && networkingConfirmation) {
-    findComplementBtn.addEventListener('click', function () {
-      networkingConfirmation.hidden = false;
-    });
-  }
+  back.addEventListener('click', function () { if (current) { current -= 1; render(); } });
+  next.addEventListener('click', function () {
+    if (!answers[questions[current].id]) return;
+    if (current < questions.length - 1) { current += 1; render(); return; }
+    var params = new URLSearchParams();
+    questions.forEach(function (question) { params.set(question.id, answers[question.id]); });
+    window.location.href = (window.PERSONALITY_RESULT_URL || '/personality/result/') + '?' + params.toString();
+  });
+  render();
 })();

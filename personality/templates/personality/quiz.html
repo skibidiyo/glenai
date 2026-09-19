@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}Mineral Personality | Glen{% endblock %}
+{% block title %}Mineral Archetypes | Glen{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'personality/personality.css' %}">
@@ -24,31 +24,19 @@
 </aside>
 
 <main class="workspace" id="main-content">
-  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Personality <span aria-hidden="true">&#8250;</span></span></div>
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Archetypes <span aria-hidden="true">&#8250;</span></span></div>
   <div class="workspace-inner personality-inner">
-
-    <section class="personality-intro" aria-labelledby="quiz-title">
-      <div class="eyebrow"><span class="eyebrow-mark"></span> MINERAL PERSONALITY</div>
-      <h1 id="quiz-title">Discover your working style</h1>
-      <p class="personality-lead">Answer {{ question_count }} short questions to explore how you approach work, collaboration, and change. This is a lightweight discovery activity, not a scientific assessment &mdash; use it to spark conversation, not to make employment decisions.</p>
+    <header class="personality-intro">
+      <span class="eyebrow">MINERAL ARCHETYPE</span>
+      <h1>Explore how you work</h1>
+      <p class="personality-lead">Explore how you tend to collaborate, make decisions, and approach challenges. Your responses will reveal the Mineral Archetype that most closely reflects your working style.</p>
+    </header>
+    <section class="quiz-card" aria-label="Work-style questions">
+      <div class="quiz-progress"><div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div><span class="quiz-progress-label" id="quiz-progress-label"></span></div>
+      <div id="quiz-questions"></div>
+      <div class="quiz-nav"><button class="ghost-button" type="button" id="quiz-back">Back</button><button class="primary-button" type="button" id="quiz-next">Next</button></div>
     </section>
-
-    <section class="quiz-card" aria-labelledby="quiz-title" id="quiz-card">
-      <div class="quiz-progress">
-        <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
-        <span class="quiz-progress-label" id="quiz-progress-label">Question 1 of {{ question_count }}</span>
-      </div>
-
-      <form id="quiz-form">
-        <div id="quiz-questions"></div>
-      </form>
-
-      <div class="quiz-nav">
-        <button class="ghost-button" type="button" id="quiz-back" disabled>Back</button>
-        <button class="primary-button" type="button" id="quiz-next">Next</button>
-      </div>
-    </section>
-
+    <p class="reflection-note">This activity is designed for workplace reflection and networking. It is not a psychological assessment and should not be used for employment decisions.</p>
   </div>
 </main>
 

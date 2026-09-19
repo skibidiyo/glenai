@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}Your Mineral | Glen{% endblock %}
+{% block title %}Your Mineral Archetype | Glen{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'personality/personality.css' %}">
@@ -24,78 +24,44 @@
 </aside>
 
 <main class="workspace" id="main-content">
-  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Personality <span aria-hidden="true">&#8250;</span></span></div>
+  <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Archetypes <span aria-hidden="true">&#8250;</span></span></div>
   <div class="workspace-inner personality-inner">
-
-    {% if not has_result %}
-    <p class="result-notice">No quiz answers were found, so we&rsquo;re showing an example result below. <a href="{% url 'personality:quiz' %}">Take the quiz</a> to get your own.</p>
-    {% endif %}
-
-    <section class="result-hero mineral-{{ mineral.key }}" aria-labelledby="result-title">
-      <span class="result-kicker">YOUR MINERAL</span>
-      <h1 id="result-title">{{ mineral.name }}</h1>
-      <p class="result-tagline">{{ mineral.tagline }}</p>
-      <div class="result-traits">{% for trait in mineral.traits %}<span class="trait-chip">{{ trait }}</span>{% endfor %}</div>
+    {% if not has_result %}<p class="result-notice">This is an example work-style profile. <a href="{% url 'personality:quiz' %}">Take the quiz</a> to see your own.</p>{% endif %}
+    <section class="scores-section" aria-labelledby="scores-title">
+      <span class="result-kicker">YOUR WORK STYLE</span>
+      <h1 id="scores-title">A view across five dimensions</h1>
+      <p>Each score averages three responses on a 0–100 scale. They reflect this short activity, not fixed traits.</p>
+      <div class="score-list">{% for score in scores %}
+        <div class="score-row"><div class="score-label"><span>{{ score.label }}</span><strong>{{ score.value }}</strong></div><div class="score-track" role="img" aria-label="{{ score.label }}: {{ score.value }} out of 100"><div class="score-fill" style="width:{{ score.value }}%"></div></div></div>
+      {% endfor %}</div>
     </section>
-
-    <section class="result-details">
-      <div class="result-detail-card">
-        <h2>Key strengths</h2>
-        <ul>{% for s in mineral.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
-      </div>
-      <div class="result-detail-card">
-        <h2>Work style</h2>
-        <p>{{ mineral.work_style }}</p>
-      </div>
-      <div class="result-detail-card">
-        <h2>Collaboration style</h2>
-        <p>{{ mineral.collaboration_style }}</p>
-      </div>
-      <div class="result-detail-card">
-        <h2>Growth opportunities</h2>
-        <ul>{% for g in mineral.growth_opportunities %}<li>{{ g }}</li>{% endfor %}</ul>
-      </div>
-      <div class="result-detail-card">
-        <h2>Roles you may enjoy</h2>
-        <ul>{% for r in mineral.roles %}<li>{{ r }}</li>{% endfor %}</ul>
-      </div>
-      <div class="result-detail-card">
-        <h2>People you may work well with</h2>
-        <div class="complement-list">
-          {% for c in complements %}
-          <div class="complement-item"><span class="mineral-dot mineral-dot-{{ c.key }}"></span><div><strong>{{ c.name }}</strong><span>{{ c.tagline }}</span></div></div>
-          {% endfor %}
-        </div>
+    <section class="result-hero mineral-{{ mineral_key }}" aria-labelledby="result-title">
+      <span class="result-kicker">YOUR MINERAL ARCHETYPE</span>
+      <h2 id="result-title">{{ mineral.name }} <span>{{ mineral.tagline }}</span></h2>
+      <p class="result-lead">Your responses show relatively strong {{ strongest.0 }} and {{ strongest.1 }} tendencies. Across all five dimensions, they align most closely with {{ mineral.name }} — {{ mineral.tagline }}.</p>
+      <p>{{ mineral.inspiration }}</p>
+      <blockquote>“{{ mineral.question }}”</blockquote>
+    </section>
+    <section class="insights-section" aria-labelledby="insights-title">
+      <span class="result-kicker">WORKPLACE INSIGHTS</span><h2 id="insights-title">Ways this style may show up</h2>
+      <div class="insight-grid">
+        <article><h3>Key strengths</h3><ul>{% for item in mineral.strengths %}<li>{{ item }}</li>{% endfor %}</ul></article>
+        <article><h3>How you work</h3><p>{{ mineral.work_style }}</p></article>
+        <article><h3>How you collaborate</h3><p>{{ mineral.collaboration }}</p></article>
+        <article><h3>Problem-solving style</h3><p>{{ mineral.problem_solving }}</p></article>
+        <article><h3>Decision-making style</h3><p>{{ mineral.decisions }}</p></article>
+        <article><h3>Leadership and contribution</h3><p>{{ mineral.leadership }}</p></article>
+        <article><h3>When you may be at your best</h3><p>{{ mineral.best }}</p></article>
+        <article><h3>Potential growth areas</h3><ul>{% for item in mineral.growth %}<li>{{ item }}</li>{% endfor %}</ul></article>
+        <article><h3>Work environments you may enjoy</h3><p>Examples of work involving:</p><ul>{% for item in mineral.environments %}<li>{{ item }}</li>{% endfor %}</ul></article>
+        <article><h3>A different style that may complement yours</h3><p><strong>{{ complement.name }} · {{ complement.tagline }}</strong></p><p>{{ mineral.complement_reason }}</p><small>A conversation starter, not a compatibility prediction.</small></article>
       </div>
     </section>
-
-    <section class="networking-cta">
-      <div>
-        <h2>Want to meet people who complement your style?</h2>
-        <p>This is a prototype interaction. In a future version, this could connect to Skill Matching.</p>
-      </div>
-      <button class="primary-button" type="button" id="find-complement-btn">Find people who complement my style</button>
+    <section class="other-minerals" aria-labelledby="houses-title">
+      <span class="result-kicker">MINERAL ARCHETYPES</span><h2 id="houses-title">Explore the five archetypes</h2>
+      <div class="mineral-grid">{% for house in houses %}<article class="mineral-summary-card mineral-{{ house.key }}"><h3>{{ house.name }}</h3><strong>{{ house.tagline }}</strong><p>{{ house.property }}</p><p>{{ house.summary }}</p></article>{% endfor %}</div>
     </section>
-    <p class="networking-confirmation" id="networking-confirmation" role="status" hidden>Coming soon &mdash; this will connect to Skill Matching to suggest complementary colleagues.</p>
-
-    <section class="other-minerals" aria-labelledby="other-minerals-title">
-      <h2 id="other-minerals-title">The other minerals</h2>
-      <div class="mineral-grid">
-        {% for m in other_minerals %}
-        <div class="mineral-summary-card mineral-{{ m.key }}">
-          <h3>{{ m.name }} <span>{{ m.tagline }}</span></h3>
-          <p>{{ m.work_style }}</p>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-
-    <div class="result-footer-actions">
-      <a class="ghost-button" href="{% url 'personality:quiz' %}">Retake the quiz</a>
-    </div>
-
+    <p class="reflection-note">This activity is designed for workplace reflection and networking. It is not a psychological assessment and should not be used for employment decisions.</p>
   </div>
 </main>
-
-<script src="{% static 'personality/personality.js' %}" defer></script>
 {% endblock %}

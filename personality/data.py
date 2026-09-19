@@ -1,177 +1,144 @@
-"""Prototype quiz content and copy for the Mineral Personality experience.
+"""Fictional work-style reflection content; not a psychological assessment."""
 
-This is a lightweight workplace discovery activity, not a validated
-psychometric instrument. No employment decisions should be based on it.
-"""
-
-QUESTIONS = [
-    {
-        'id': 'q1',
-        'prompt': 'When working on a new problem, I usually...',
-        'options': [
-            {'text': 'Bring people together and build agreement', 'mineral': 'copper'},
-            {'text': 'Explore unusual ideas and experiment', 'mineral': 'cobalt'},
-            {'text': 'Create structure and establish a dependable plan', 'mineral': 'nickel'},
-            {'text': 'Adapt quickly as new information appears', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q2',
-        'prompt': 'In a team meeting, I’m most likely to...',
-        'options': [
-            {'text': 'Check in on how everyone is feeling about the plan', 'mineral': 'copper'},
-            {'text': 'Suggest a completely different way of looking at it', 'mineral': 'cobalt'},
-            {'text': 'Ask what the timeline and next steps are', 'mineral': 'nickel'},
-            {'text': 'Point out a risk that needs a quick workaround', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q3',
-        'prompt': 'A colleague asks for help with a task outside my usual role. I...',
-        'options': [
-            {'text': 'Offer to loop in others who might help too', 'mineral': 'copper'},
-            {'text': 'Get curious and try a new approach to it', 'mineral': 'cobalt'},
-            {'text': 'Break it into steps and work through it methodically', 'mineral': 'nickel'},
-            {'text': 'Improvise with whatever is on hand', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q4',
-        'prompt': 'My colleagues would probably describe me as...',
-        'options': [
-            {'text': 'Warm and easy to talk to', 'mineral': 'copper'},
-            {'text': 'Full of ideas', 'mineral': 'cobalt'},
-            {'text': 'Dependable and consistent', 'mineral': 'nickel'},
-            {'text': 'Quick on my feet', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q5',
-        'prompt': 'When plans change at the last minute, I...',
-        'options': [
-            {'text': 'Check in with the people affected first', 'mineral': 'copper'},
-            {'text': 'Get energised by the chance to try something new', 'mineral': 'cobalt'},
-            {'text': 'Look for a way to restore a stable plan quickly', 'mineral': 'nickel'},
-            {'text': 'Shift direction without much friction', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q6',
-        'prompt': 'The part of a project I enjoy most is...',
-        'options': [
-            {'text': 'Coordinating everyone toward the same goal', 'mineral': 'copper'},
-            {'text': 'The early, open-ended brainstorming', 'mineral': 'cobalt'},
-            {'text': 'Seeing a solid process through to completion', 'mineral': 'nickel'},
-            {'text': 'Solving the unexpected problem that comes up', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q7',
-        'prompt': 'I feel most useful at work when I’m...',
-        'options': [
-            {'text': 'Helping resolve a disagreement between colleagues', 'mineral': 'copper'},
-            {'text': 'Pitching a new idea nobody has tried yet', 'mineral': 'cobalt'},
-            {'text': 'Keeping a project on track and on schedule', 'mineral': 'nickel'},
-            {'text': 'Finding a practical fix under pressure', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q8',
-        'prompt': 'When giving feedback to a colleague, I tend to...',
-        'options': [
-            {'text': 'Lead with encouragement and keep the relationship warm', 'mineral': 'copper'},
-            {'text': 'Suggest a different angle they might not have considered', 'mineral': 'cobalt'},
-            {'text': 'Reference the agreed plan or standard to keep things objective', 'mineral': 'nickel'},
-            {'text': 'Focus on what can realistically change right now', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q9',
-        'prompt': 'Faced with a tight deadline, I’m most likely to...',
-        'options': [
-            {'text': 'Rally the team and divide the work together', 'mineral': 'copper'},
-            {'text': 'Look for a smarter, faster way to solve it', 'mineral': 'cobalt'},
-            {'text': 'Lock in a clear checklist and work through it in order', 'mineral': 'nickel'},
-            {'text': 'Juggle priorities and adjust as things move', 'mineral': 'zinc'},
-        ],
-    },
-    {
-        'id': 'q10',
-        'prompt': 'A tool or process I rely on breaks unexpectedly. My first instinct is to...',
-        'options': [
-            {'text': 'Ask around to see who else has hit the same issue', 'mineral': 'copper'},
-            {'text': 'Treat it as a chance to try a different tool altogether', 'mineral': 'cobalt'},
-            {'text': 'Follow the documented fallback procedure', 'mineral': 'nickel'},
-            {'text': 'Cobble together a quick workaround and keep moving', 'mineral': 'zinc'},
-        ],
-    },
+DIMENSIONS = [
+    ('openness', 'Openness'),
+    ('conscientiousness', 'Conscientiousness'),
+    ('extraversion', 'Extraversion'),
+    ('agreeableness', 'Agreeableness'),
+    ('emotional_stability', 'Emotional Stability'),
 ]
+
+# Three statements per dimension. Reverse items are inverted before averaging.
+QUESTIONS = [
+    {'id': 'o1', 'dimension': 'openness', 'reverse': False, 'prompt': 'I enjoy exploring several approaches before settling on one.'},
+    {'id': 'o2', 'dimension': 'openness', 'reverse': False, 'prompt': 'An unfamiliar challenge makes me curious to try something new.'},
+    {'id': 'o3', 'dimension': 'openness', 'reverse': True, 'prompt': 'I prefer familiar methods even when a new approach could be useful.'},
+    {'id': 'c1', 'dimension': 'conscientiousness', 'reverse': False, 'prompt': 'I turn broad goals into clear steps and follow through on them.'},
+    {'id': 'c2', 'dimension': 'conscientiousness', 'reverse': False, 'prompt': 'I keep track of details that others will need to deliver their work.'},
+    {'id': 'c3', 'dimension': 'conscientiousness', 'reverse': True, 'prompt': 'I often leave the final details of a task until the last moment.'},
+    {'id': 'e1', 'dimension': 'extraversion', 'reverse': False, 'prompt': 'Talking through ideas with colleagues gives me energy.'},
+    {'id': 'e2', 'dimension': 'extraversion', 'reverse': False, 'prompt': 'I am comfortable bringing different people into a discussion.'},
+    {'id': 'e3', 'dimension': 'extraversion', 'reverse': True, 'prompt': 'I usually avoid speaking up in a group, even when I have an idea to share.'},
+    {'id': 'a1', 'dimension': 'agreeableness', 'reverse': False, 'prompt': 'I take time to understand how a decision affects other people.'},
+    {'id': 'a2', 'dimension': 'agreeableness', 'reverse': False, 'prompt': 'I look for ways to support colleagues when priorities change.'},
+    {'id': 'a3', 'dimension': 'agreeableness', 'reverse': True, 'prompt': 'When a disagreement arises, I rarely consider the other person’s perspective.'},
+    {'id': 's1', 'dimension': 'emotional_stability', 'reverse': False, 'prompt': 'I can stay composed when a plan changes unexpectedly.'},
+    {'id': 's2', 'dimension': 'emotional_stability', 'reverse': False, 'prompt': 'Under pressure, I can pause and consider the next sensible step.'},
+    {'id': 's3', 'dimension': 'emotional_stability', 'reverse': True, 'prompt': 'A setback often makes it difficult for me to regain my focus.'},
+]
+
+MINERAL_ORDER = ['copper', 'cobalt', 'zinc', 'lead', 'nickel']
+
+# Editorial archetype patterns in dimension order above, on a 0–100 scale.
+# Every dimension contributes to squared-distance comparison. These are metaphors,
+# not norms or validated psychological cutoffs. A fixed order breaks exact ties.
+ARCHETYPE_TARGETS = {
+    'copper': [70, 60, 85, 85, 70],  # social connection and cooperation
+    'cobalt': [90, 55, 70, 55, 65],  # exploration and new possibilities
+    'zinc': [60, 60, 50, 90, 75],  # support and team continuity
+    'lead': [45, 75, 35, 55, 90],  # calm judgement before action
+    'nickel': [50, 90, 45, 60, 80],  # structured, reliable execution
+}
 
 MINERALS = {
     'copper': {
-        'key': 'copper',
-        'name': 'Copper',
-        'tagline': 'The Connector',
-        'traits': ['Collaborative', 'People-focused', 'Relationship builder', 'Turns conversation into action'],
-        'strengths': ['Communication', 'Teamwork', 'Stakeholder engagement', 'Coordination'],
-        'work_style': 'You bring people into the conversation early and keep them aligned as things move forward.',
-        'collaboration_style': 'You build trust quickly and help teams find common ground before pushing ahead.',
-        'growth_opportunities': ['Practising giving direct, structured feedback', 'Setting aside dedicated time for solo deep work'],
-        'roles': ['Stakeholder engagement lead', 'Change management', 'Team coordination', 'Client-facing roles'],
-        'complements': ['nickel', 'cobalt'],
+        'name': 'Copper', 'tagline': 'The Connector', 'property': 'Copper conducts electricity and heat.',
+        'inspiration': 'Inspired by copper’s conductivity, this archetype may reflect a working style that helps people, ideas, and information move across teams.',
+        'summary': 'Helps ideas and relationships move across teams.', 'question': 'Who should we bring together?',
+        'strengths': ['Communication', 'Facilitation', 'Connecting perspectives'],
+        'work_style': 'You may prefer to move ideas forward through conversation and shared understanding.',
+        'collaboration': 'You tend to bring people into the discussion and look for common ground.',
+        'problem_solving': 'You may connect insights from several people before choosing a path.',
+        'decisions': 'You tend to consider who should be involved and how to build alignment.',
+        'leadership': 'You may contribute through collaborative, facilitative leadership.',
+        'best': 'Cross-team work where communication and knowledge sharing matter.',
+        'growth': ['Make room for focused individual work.', 'State a clear recommendation when discussion has run its course.'],
+        'environments': ['Stakeholder engagement', 'Cross-functional projects', 'Communications'],
+        'complement': 'nickel', 'complement_reason': 'Copper may help ideas travel across teams; Nickel may help turn them into reliable execution.',
     },
     'cobalt': {
-        'key': 'cobalt',
-        'name': 'Cobalt',
-        'tagline': 'The Innovator',
-        'traits': ['Curious', 'Exploratory', 'Creative', 'Interested in new possibilities'],
-        'strengths': ['Experimentation', 'Ideation', 'Innovation', 'Problem solving'],
-        'work_style': 'You gravitate toward the open-ended parts of a problem and enjoy testing unconventional ideas.',
-        'collaboration_style': 'You energise a team’s thinking, especially early in a project when options are still open.',
-        'growth_opportunities': ['Following an idea through to a finished, practical outcome', 'Building in structure once a plan is chosen'],
-        'roles': ['Innovation and R&D', 'Product design', 'Strategy', 'Process improvement'],
-        'complements': ['nickel', 'zinc'],
-    },
-    'nickel': {
-        'key': 'nickel',
-        'name': 'Nickel',
-        'tagline': 'The Stabiliser',
-        'traits': ['Reliable', 'Structured', 'Resilient', 'Consistent'],
-        'strengths': ['Planning', 'Organisation', 'Process', 'Maintaining momentum'],
-        'work_style': 'You bring order to ambiguity and make sure commitments are followed through.',
-        'collaboration_style': 'Teams rely on you to keep a project grounded and moving steadily forward.',
-        'growth_opportunities': ['Getting comfortable with a looser, less defined plan', 'Making space for experimentation'],
-        'roles': ['Programme and project management', 'Operations', 'Planning and scheduling', 'Quality and process'],
-        'complements': ['cobalt', 'copper'],
+        'name': 'Cobalt', 'tagline': 'The Energiser', 'property': 'Cobalt is used in high-performance technologies, including batteries and specialised materials.',
+        'inspiration': 'Inspired by cobalt’s use in high-performance applications, this archetype may reflect curiosity and energy for new possibilities.',
+        'summary': 'Brings momentum to new ideas.', 'question': 'What new possibility could we explore?',
+        'strengths': ['Curiosity', 'Experimentation', 'Generating possibilities'],
+        'work_style': 'You may enjoy exploring an open question before narrowing the options.',
+        'collaboration': 'You tend to invite others to test assumptions and imagine alternatives.',
+        'problem_solving': 'You may try a small experiment to learn what could work.',
+        'decisions': 'You tend to value evidence from exploration before committing.',
+        'leadership': 'You may contribute through vision-oriented, exploratory leadership.',
+        'best': 'Early-stage challenges with room to test ideas.',
+        'growth': ['Choose a practical next step after exploration.', 'Invite careful review of risks and constraints.'],
+        'environments': ['Innovation', 'Technology', 'Transformation'],
+        'complement': 'lead', 'complement_reason': 'Cobalt may explore possibilities; Lead may help assess risks and consequences.',
     },
     'zinc': {
-        'key': 'zinc',
-        'name': 'Zinc',
-        'tagline': 'The Adapter',
-        'traits': ['Flexible', 'Resourceful', 'Practical', 'Responsive to change'],
-        'strengths': ['Adaptability', 'Finding solutions', 'Navigating changing situations', 'Connecting different perspectives'],
-        'work_style': 'You stay practical under pressure and adjust course quickly when circumstances shift.',
-        'collaboration_style': 'You help teams respond to the unexpected without losing momentum.',
-        'growth_opportunities': ['Slowing down to document a process for others', 'Sticking with a long, steady plan without changing course'],
-        'roles': ['Field and site operations', 'Troubleshooting and support', 'Cross-functional coordination', 'Logistics'],
-        'complements': ['cobalt', 'nickel'],
+        'name': 'Zinc', 'tagline': 'The Protector', 'property': 'Zinc is used to galvanise steel and help protect it from corrosion.',
+        'inspiration': 'Inspired by zinc’s protective role in galvanisation, this archetype may reflect a supportive style that helps teams maintain effectiveness during change.',
+        'summary': 'Supports teams through change.', 'question': 'How do we support the team through this?',
+        'strengths': ['Consideration', 'Team support', 'Practical adaptability'],
+        'work_style': 'You may notice what people need as circumstances shift.',
+        'collaboration': 'You tend to make space for different needs and help others stay connected.',
+        'problem_solving': 'You may find practical adjustments that protect team continuity.',
+        'decisions': 'You tend to consider the impact of change on those doing the work.',
+        'leadership': 'You may contribute through supportive, adaptive leadership.',
+        'best': 'Collaborative work where circumstances or needs are changing.',
+        'growth': ['Protect time for your own priorities.', 'Raise difficult issues early, even when doing so feels uncomfortable.'],
+        'environments': ['Change support', 'People & Culture', 'Service and operational support'],
+        'complement': 'cobalt', 'complement_reason': 'Zinc may sustain people through change; Cobalt may open up fresh possibilities.',
+    },
+    'lead': {
+        'name': 'Lead', 'tagline': 'The Anchor', 'property': 'Lead’s density has supported shielding applications.',
+        'inspiration': 'Inspired by lead’s density and shielding applications, this archetype may reflect grounding, careful judgement, and awareness of consequences.',
+        'summary': 'Brings grounding and careful judgement.', 'question': 'What should we consider before we act?',
+        'strengths': ['Risk awareness', 'Calm judgement', 'Deliberation'],
+        'work_style': 'You may prefer to understand the implications before taking action.',
+        'collaboration': 'You tend to offer a steady perspective when a team faces pressure.',
+        'problem_solving': 'You may examine risks, assumptions and possible consequences.',
+        'decisions': 'You tend to pause, weigh evidence and make considered choices.',
+        'leadership': 'You may contribute through calm, deliberate leadership.',
+        'best': 'Complex decisions where safety, risk or long-term effects matter.',
+        'growth': ['Share your assessment early enough to shape the discussion.', 'Recognise when enough evidence is available to move.'],
+        'environments': ['Risk and safety', 'Governance', 'Complex operations'],
+        'complement': 'cobalt', 'complement_reason': 'Lead may assess consequences; Cobalt may bring fresh possibilities into view.',
+    },
+    'nickel': {
+        'name': 'Nickel', 'tagline': 'The Reinforcer', 'property': 'Nickel can strengthen alloys and improve durability and corrosion resistance.',
+        'inspiration': 'Inspired by nickel’s role in strengthening alloys, this archetype may reflect a preference for strengthening plans, systems, and reliable delivery.',
+        'summary': 'Strengthens plans, systems and execution.', 'question': 'How do we make this stronger and deliver it reliably?',
+        'strengths': ['Organisation', 'Implementation', 'Process improvement'],
+        'work_style': 'You may turn broad intentions into workable systems and clear steps.',
+        'collaboration': 'You tend to make responsibilities and handoffs easier to follow.',
+        'problem_solving': 'You may improve a process so the solution works consistently.',
+        'decisions': 'You tend to ask what can be delivered reliably with the available resources.',
+        'leadership': 'You may contribute through structured, execution-focused leadership.',
+        'best': 'Work that benefits from dependable implementation and repeatable processes.',
+        'growth': ['Leave room to test unconventional ideas.', 'Check whether a process still serves the people using it.'],
+        'environments': ['Operations', 'Project delivery', 'Engineering and process improvement'],
+        'complement': 'copper', 'complement_reason': 'Nickel may turn plans into reliable delivery; Copper may help people align around them.',
     },
 }
 
-MINERAL_ORDER = ['copper', 'cobalt', 'nickel', 'zinc']
 
+def score_answers(answers):
+    """Return five 0–100 dimension scores and the closest editorial archetype.
 
-def score_answers(mineral_keys):
-    """Tally selected mineral keys and return the winning mineral key.
-
-    Ties are broken by the fixed MINERAL_ORDER so results are deterministic.
+    Answers map question IDs to Likert values 1–5. Reverse items use 6-value.
+    Each dimension averages three items; (average-1)*25 yields 0–100.
+    The selected house minimises squared distance across all five dimensions.
+    Equal distances use MINERAL_ORDER, making results deterministic.
     """
-    tally = {key: 0 for key in MINERAL_ORDER}
-    for key in mineral_keys:
-        if key in tally:
-            tally[key] += 1
-    best_score = max(tally.values()) if tally else 0
-    for key in MINERAL_ORDER:
-        if tally[key] == best_score:
-            return key, tally
-    return MINERAL_ORDER[0], tally
+    scores = {}
+    for key, _label in DIMENSIONS:
+        items = [q for q in QUESTIONS if q['dimension'] == key]
+        values = []
+        for item in items:
+            value = int(answers[item['id']])
+            if value < 1 or value > 5:
+                raise ValueError('Responses must be between 1 and 5')
+            values.append(6 - value if item['reverse'] else value)
+        scores[key] = round((sum(values) / len(values) - 1) * 25)
+    vector = [scores[key] for key, _label in DIMENSIONS]
+    mineral = min(MINERAL_ORDER, key=lambda key: sum(
+        (actual - target) ** 2 for actual, target in zip(vector, ARCHETYPE_TARGETS[key])
+    ))
+    return scores, mineral
