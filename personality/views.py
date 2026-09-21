@@ -3,13 +3,24 @@ from django.shortcuts import render
 from .data import ARCHETYPE_TARGETS, DIMENSIONS, MINERAL_ORDER, MINERALS, QUESTIONS, score_answers
 
 
-def quiz(request):
+def page_context(mobile):
+    namespace = 'personality-mobile' if mobile else 'personality'
+    return {
+        'mobile': mobile,
+        'base_template': 'personality/mobile_base.html' if mobile else 'main/base.html',
+        'quiz_url_name': f'{namespace}:quiz',
+        'result_url_name': f'{namespace}:result',
+    }
+
+
+def quiz(request, mobile=False):
     return render(request, 'personality/quiz.html', {
         'questions': QUESTIONS, 'question_count': len(QUESTIONS),
+        **page_context(mobile),
     })
 
 
-def result(request):
+def result(request, mobile=False):
     answers = {question['id']: request.GET.get(question['id']) for question in QUESTIONS}
     has_result = all(value in {'1', '2', '3', '4', '5'} for value in answers.values())
     if has_result:
@@ -31,4 +42,5 @@ def result(request):
         'houses': [{'key': key, **MINERALS[key]} for key in MINERAL_ORDER],
         'complement': MINERALS[mineral['complement']],
         'has_result': has_result,
+        **page_context(mobile),
     })

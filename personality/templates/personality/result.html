@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends base_template %}
 {% load static %}
 
 {% block title %}Your Mineral Archetype | Glen{% endblock %}
@@ -6,6 +6,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'personality/personality.css' %}">
 
+{% if not mobile %}
 <aside class="chat-panel" aria-label="Glen assistant chat">
   <div class="chat-heading">
     <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
@@ -22,11 +23,14 @@
   </div>
   <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
 </aside>
+{% endif %}
 
 <main class="workspace" id="main-content">
+{% if not mobile %}
   <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Archetypes <span aria-hidden="true">&#8250;</span></span></div>
+{% endif %}
   <div class="workspace-inner personality-inner">
-    {% if not has_result %}<p class="result-notice">This is an example work-style profile. <a href="{% url 'personality:quiz' %}">Take the quiz</a> to see your own.</p>{% endif %}
+    {% if not has_result %}<p class="result-notice">This is an example work-style profile. <a href="{% url quiz_url_name %}">Take the quiz</a> to see your own.</p>{% endif %}
     <section class="scores-section" aria-labelledby="scores-title">
       <span class="result-kicker">YOUR WORK STYLE</span>
       <h1 id="scores-title">A view across five dimensions</h1>
@@ -36,8 +40,15 @@
       {% endfor %}</div>
     </section>
     <section class="result-hero mineral-{{ mineral_key }}" aria-labelledby="result-title">
-      <span class="result-kicker">YOUR MINERAL ARCHETYPE</span>
-      <h2 id="result-title">{{ mineral.name }} <span>{{ mineral.tagline }}</span></h2>
+      <div class="result-heading">
+        <div class="result-heading-text">
+          <span class="result-kicker">YOUR MINERAL ARCHETYPE</span>
+          <h2 id="result-title">{{ mineral.name }} <span>{{ mineral.tagline }}</span></h2>
+        </div>
+        {% with mineral_image='minerals/'|add:mineral_key|add:'.png' %}
+          <img class="result-mineral-image" src="{% static mineral_image %}" alt="{{ mineral.name }} mineral" width="140" height="140">
+        {% endwith %}
+      </div>
       <p class="result-lead">Your responses show relatively strong {{ strongest.0 }} and {{ strongest.1 }} tendencies. Across all five dimensions, they align most closely with {{ mineral.name }} — {{ mineral.tagline }}.</p>
       <p>{{ mineral.inspiration }}</p>
       <blockquote>“{{ mineral.question }}”</blockquote>
@@ -59,7 +70,7 @@
     </section>
     <section class="other-minerals" aria-labelledby="houses-title">
       <span class="result-kicker">MINERAL ARCHETYPES</span><h2 id="houses-title">Explore the five archetypes</h2>
-      <div class="mineral-grid">{% for house in houses %}<article class="mineral-summary-card mineral-{{ house.key }}"><h3>{{ house.name }}</h3><strong>{{ house.tagline }}</strong><p>{{ house.property }}</p><p>{{ house.summary }}</p></article>{% endfor %}</div>
+      <div class="mineral-grid">{% for house in houses %}<article class="mineral-summary-card mineral-{{ house.key }}"><div class="mineral-summary-heading"><h3>{{ house.name }}</h3>{% with mineral_image='minerals/'|add:house.key|add:'.png' %}<img src="{% static mineral_image %}" alt="" width="36" height="36" loading="lazy">{% endwith %}</div><strong>{{ house.tagline }}</strong><p>{{ house.property }}</p><p>{{ house.summary }}</p></article>{% endfor %}</div>
     </section>
     <p class="reflection-note">This activity is designed for workplace reflection and networking. It is not a psychological assessment and should not be used for employment decisions.</p>
   </div>

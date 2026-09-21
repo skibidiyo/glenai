@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends base_template %}
 {% load static %}
 
 {% block title %}Mineral Archetypes | Glen{% endblock %}
@@ -6,6 +6,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'personality/personality.css' %}">
 
+{% if not mobile %}
 <aside class="chat-panel" aria-label="Glen assistant chat">
   <div class="chat-heading">
     <div class="chat-identity"><span class="chat-heading-avatar"><img src="{% static 'main/images/nolegmascot.png' %}" alt="Glen mascot"></span><div><h1>Glen</h1><p>Your AI assistant at Glencore</p></div></div>
@@ -22,9 +23,12 @@
   </div>
   <div class="about-view" id="about-view" role="tabpanel" aria-labelledby="about-tab" hidden><h2>About Glen</h2><p>Glen is a prototype workplace assistant for finding information, support, and opportunities to connect.</p><p>Responses in this demo are examples only. No workplace systems or accounts are connected.</p></div>
 </aside>
+{% endif %}
 
 <main class="workspace" id="main-content">
+{% if not mobile %}
   <div class="workspace-topline"><span>Glen</span><span class="workspace-topline-right">Mineral Archetypes <span aria-hidden="true">&#8250;</span></span></div>
+{% endif %}
   <div class="workspace-inner personality-inner">
     <header class="personality-intro">
       <span class="eyebrow">MINERAL ARCHETYPE</span>
@@ -41,6 +45,6 @@
 </main>
 
 {{ questions|json_script:"quiz-questions-data" }}
-<script>window.PERSONALITY_RESULT_URL = "{% url 'personality:result' %}";</script>
+<script>window.PERSONALITY_RESULT_URL = "{% url result_url_name %}";</script>
 <script src="{% static 'personality/personality.js' %}" defer></script>
 {% endblock %}
